@@ -64,9 +64,8 @@ public class TelaLogin extends JFrame implements ActionListener{
          * 3. Uso de ArrayList
          * 4. Colocar underline em textos de widgets
          * 5. Centralizar valores de textos
-         * 6. Pegando valor e alterando valor de um widget
-         * 7. Interagindo com ArrayList
-         * 
+         * 6. Formatação de datas
+         * 7. Formatação de horários
          * 
          * 
          * 1. Setando fonte dos widgets
@@ -103,21 +102,18 @@ public class TelaLogin extends JFrame implements ActionListener{
          *     linha.setHorizontalAlignment(JTextField.CENTER);
          * }
          * 
-         * 6. Pegando valor e alterando valor de um widget
-         * widget.getText() ; widget.setText(valor)
+         * 6. Datas
+         * 6.1. Data → str
+         * private SimpleDateFormat date_formatter = new SimpleDateFormat("dd-MM-yyyy");
+         * date_formatter.format(Data data)
          * 
-         * 7. Interagindo com ArrayList
-         * 7.1. get:
-         * arrayList.get(index);
+         * 7. Horários
+         * 7.1. Time → str
+         * private SimpleDateFormat date_formatter = new SimpleDateFormat("dd-MM-yyyy");
+         * time_formatter.format(Time time)
          * 
-         * 7.2. update:
-         * arrayList.set(index, newValue);
          * 
-         * 7.3. remove:
-         * ValueType removedValue = arrayList.remove(index);
          * 
-         * 7.4. add (in the end):
-         * arrayList.add(value);
          */
         label_username = new JLabel("Username: ");
         text_username = new JTextField(20);
@@ -131,8 +127,27 @@ public class TelaLogin extends JFrame implements ActionListener{
         // Fazendo a adição dos widgets nas separações feitas
         /*
          * 1. Preenchimento em um GridLayout 
+         * 2. Pegando valor e alterando valor de um widget
+         * 3. Interagindo com ArrayList
+         * 
+         * 1. Preenchimento em um GridLayout 
          * ao adicionar em um grid, adiciona preenchendo linha por linha (preenche a linha, dps vai pra próxima)
          * 
+         * 2. Pegando valor e alterando valor de um widget
+         * widget.getText() ; widget.setText(valor)
+         * 
+         * 3. Interagindo com ArrayList
+         * 3.1. get:
+         * arrayList.get(index);
+         * 
+         * 3.2. update:
+         * arrayList.set(index, newValue);
+         * 
+         * 3.3. remove:
+         * ValueType removedValue = arrayList.remove(index);
+         * 
+         * 3.4. add (in the end):
+         * arrayList.add(value);
         */
         username.add(label_username);
         username.add(text_username);
