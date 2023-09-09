@@ -6,18 +6,28 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 public class StudentData {
-    private String name;
-    private int id;
+    private int id_grade;
+    private int id_user;
     private Time time;
     private Date date;
-    private float final_grade;
-    private int miss;
+    private float grade;
     private SimpleDateFormat date_formatter = new SimpleDateFormat("yyyy-MM-dd");  
     private SimpleDateFormat time_formatter = new SimpleDateFormat("HH:mm:ss");
     
-    public StudentData(String name, int id){
-        this.name = name;
-        this.id = id;
+    public StudentData(){
+        this.id_grade = 0;
+        this.id_user = 0;
+        this.time = null;
+        this.date = null;
+        this.grade = 0;
+    }
+
+    public StudentData(int id_grade, int id_user){
+        this.id_user = id_user;
+        this.id_grade = id_grade;
+        this.time = null;
+        this.date = null;
+        this.grade = 0;
     }
     
     public String getCurrentTimeString(){
@@ -36,6 +46,22 @@ public class StudentData {
         return this.date_formatter.format(this.date);
     }
 
+    public int getIdGrade() {
+        return this.id_grade;
+    }
+
+    public void setIdGrade(int id_grade) {
+        this.id_grade = id_grade;
+    }
+
+    public int getIdUser() {
+        return this.id_user;
+    }
+
+    public void setIdUser(int id_user) {
+        this.id_user = id_user;
+    }
+
     public Time getTime() {
         return this.time;
     }
@@ -52,54 +78,29 @@ public class StudentData {
         this.date = date;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public float getFinal_grade() {
+    public float getGrade() {
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
-        String roundedString = decimalFormat.format(this.final_grade);
+        String roundedString = decimalFormat.format(this.grade);
         String n = roundedString.replace(",", ".");
         float roundedFloat = Float.parseFloat(n);
         return roundedFloat;
     }
 
-    public double getFinal_grade_double(){
-        double d = this.final_grade;
+    public double getGrade_double(){
+        double d = this.grade;
         return d;
     }
 
-    public void setFinal_grade(float final_grade) {
-        this.final_grade = final_grade;
+    public void setGrade(float grade) {
+        this.grade = grade;
     }
 
-    public int getMiss() {
-        return this.miss;
-    }
-
-    public void setMiss(int miss) {
-        this.miss = miss;
-    }
-
-    public int getId() {
-        return this.id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-    
-    public void print_dados(){
-        System.out.println("Nome: " + this.name);
-        System.out.println("ID: " + this.id);
-        System.out.println("Nota final: " + this.final_grade);
-        System.out.println("Faltas: " + this.miss);
-        System.out.println("Data: " + this.getCurrentDateString());
-        System.out.println("Hora: " + this.getCurrentTimeString());
+    public String toString(){
+        return "Id Grade: " + this.id_grade + "\n" +
+               "Id User: " + this.id_user + "\n" +
+               "Nota: " + this.grade + "\n" +
+               "Data: " + this.getCurrentDateString() + "\n" +
+               "Hora: " + this.getCurrentTimeString();
     }
 
 

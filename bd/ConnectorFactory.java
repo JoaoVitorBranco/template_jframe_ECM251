@@ -8,7 +8,7 @@ public class ConnectorFactory {
 
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
-    private static final String DATABASE =  "AULA_14";
+    private static final String DATABASE =  "TEMPLATE";
     private static final int PORT = 3306;
     private static final String URL  =   "jdbc:mysql://localhost:" + PORT + "/" + DATABASE;
 

@@ -32,7 +32,7 @@ public class TelaLogin extends JFrame implements ActionListener{
     // construtor
     public TelaLogin(ResourceBundle bn){
         // Método "super"
-        super("Template");
+        super("Template - Tela Login");
     
         // Atribuição do ResourceBundle
         this.bn = bn;
@@ -119,6 +119,8 @@ public class TelaLogin extends JFrame implements ActionListener{
          * 6.2. str → Data
          * private SimpleDateFormat date_formatter = new SimpleDateFormat("dd-MM-yyyy");
          * date_formatter.parse(String data)
+         * 6.3. Pegar tempo atual
+         * date_formatter.format(new Date())
          * 
          * 7. Horários
          * 7.1. Time → str
@@ -127,6 +129,8 @@ public class TelaLogin extends JFrame implements ActionListener{
          * 7.2. str → Time
          * private SimpleDateFormat date_formatter = new SimpleDateFormat("dd-MM-yyyy");
          * time_formatter.parse(String time)
+         * 7.3. Pegar tempo autal
+         * time_formatter.format(new Date())
          * 
          * 8. JOptionPane
          * 8.1. JOptionPane.showInputDialog
@@ -171,6 +175,8 @@ public class TelaLogin extends JFrame implements ActionListener{
          * JTable table = new JTable(model);
          * JScrollPane scrollPane = new JScrollPane(table);
          * // adicionar o scrollPane no GUI
+         * 11.3. Pegando valor da tabela
+         * model.getValueAt(int linha, int coluna);
          * 
          * 
          * 
@@ -248,7 +254,7 @@ public class TelaLogin extends JFrame implements ActionListener{
             }
             else{
                 JOptionPane.showMessageDialog(null, this.bn.getString("tela_login.cadastro.correto"));
-                TelaDados tela_dados = new TelaDados(text_username.getText());
+                TelaDados tela_dados = new TelaDados(this.bn);
                 this.dispose();
             }
         }else if(e.getSource() == button_exit){

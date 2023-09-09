@@ -4,8 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-
+import java.util.ArrayList;
 import entidades.StudentData;
 
 
@@ -56,60 +55,131 @@ public class Crud{
         return index; 
     }
     
-    public static StudentData get_student_data(StudentData student){
-        String sqlSelect = "SELECT final_grade, miss, date, time FROM DADOS WHERE id = ?";
+    public static void create(StudentData data){
+        String sqlInsert = "INSERT INTO DADOS VALUES(0, ?, ?, ?, ?)";
+        Connection conn = ConnectorFactory.getConn();
+        PreparedStatement stmt = null;
+        try{
+            stmt = conn.prepareStatement(sqlInsert);
+            stmt.setInt(1, data.getIdUser());
+            stmt.setDouble(2, data.getGrade());
+            stmt.setString(3, data.getCurrentDateString());
+            stmt.setString(4, data.getCurrentTimeString());
+            stmt.executeUpdate();
+        }
+        catch(SQLException e){
+            try{   
+                conn.rollback();
+            }
+            catch(SQLException ex){
+                System.out.println("Erro ao incluir os dados" + ex.toString());
+            }
+        }
+        finally{   
+            ConnectorFactory.closeConn(conn, stmt);
+        }
+    }
+
+    public static StudentData get(int id_grade){
+        String sqlSelect = "SELECT * FROM DADOS WHERE id_grade = ?";
+        Connection conn = ConnectorFactory.getConn();
+        PreparedStatement stmt = null;
+        ResultSet rs;
+        StudentData data = new StudentData();
+        try{   
+            stmt = conn.prepareStatement(sqlSelect);
+            stmt.setInt(1, id_grade);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                data.setIdGrade(rs.getInt("id_grade"));
+                data.setIdUser(rs.getInt("id_user"));
+                data.setGrade(rs.getFloat("grade"));
+                data.setDate(rs.getDate("date"));
+                data.setTime(rs.getTime("time"));
+            }
+        }
+        catch(SQLException ex){   
+            System.out.println("Erro ao consultar os dados" + ex.toString());
+        }
+        finally{
+            ConnectorFactory.closeConn(conn, stmt);
+        }       
+        return data;
+    }
+    
+    public static void update(StudentData data){
+        String sqlUpdate = "UPDATE DADOS SET grade = ?, date = ?, time = ? WHERE id_grade = ?";
+        Connection conn = ConnectorFactory.getConn();
+        PreparedStatement stmt = null;
+        try{   
+            stmt = conn.prepareStatement(sqlUpdate);
+            stmt.setDouble(1, data.getGrade());
+            stmt.setString(2, data.getCurrentDateString());
+            stmt.setString(3, data.getCurrentTimeString());
+            stmt.setInt(4, data.getIdGrade());
+            stmt.executeUpdate();
+        }
+        catch(SQLException e){
+            try{
+                conn.rollback();
+            }
+            catch(SQLException ex){
+                System.out.println("Erro ao alterar os dados" + ex.toString());
+            }
+        }
+        finally{   
+            ConnectorFactory.closeConn(conn, stmt);
+        }  
+    }
+    
+    public static void delete(int id_grade){
+        String sqlDelete = "DELETE FROM DADOS WHERE id_grade = ?";
+        Connection conn = ConnectorFactory.getConn();
+        PreparedStatement stmt = null;
+        try{   
+            stmt = conn.prepareStatement(sqlDelete);
+            stmt.setInt(1, id_grade);
+            stmt.executeUpdate();
+        }
+        catch(SQLException e){   
+            try{
+                conn.rollback();
+            }
+            catch(SQLException ex){
+                System.out.println("Erro ao excluir os dados" + ex.toString());
+            }
+        }
+        finally{
+            ConnectorFactory.closeConn(conn, stmt);
+        }
+    }
+    
+    public static ArrayList<StudentData> get_all(){
+        ArrayList<StudentData> dados = new ArrayList<>();
+        String sqlSelect = "SELECT * FROM DADOS";
         Connection conn = ConnectorFactory.getConn();
         PreparedStatement stmt = null;
         ResultSet result_set;
         try{   
             stmt = conn.prepareStatement(sqlSelect);
-            stmt.setInt(1, student.getId());
             result_set = stmt.executeQuery();
-            while(result_set.next()){ 
-                student.setDate(result_set.getDate("date"));
-                student.setTime(result_set.getTime("time"));
-                student.setFinal_grade(result_set.getFloat("final_grade"));
-                student.setMiss(result_set.getInt("miss"));
+            while(result_set.next()){  
+                StudentData data = new StudentData(
+                    result_set.getInt("id_grade"),
+                    result_set.getInt("id_user")
+                );
+                data.setGrade(result_set.getFloat("grade"));
+                data.setDate(result_set.getDate("date"));
+                data.setTime(result_set.getTime("time"));
+                dados.add(data);
             }
         }
-        catch(SQLException ex)
-        {   System.out.println("Erro ao buscar todos os dados" + ex.toString());
+        catch(SQLException ex){
+            System.out.println("Erro ao buscar todos os dados" + ex.toString());
         }
-        finally
-        {   
+        finally{   
             ConnectorFactory.closeConn(conn, stmt);
         }   
-        return student;
-        
+        return dados;
     }
-    
-    public static int update_student_data(StudentData student){
-        String sqlUpdate = "UPDATE DADOS SET final_grade = ?, miss = ?, date = ?, time = ? WHERE id = ?";
-        Connection conn = ConnectorFactory.getConn();
-        PreparedStatement stmt = null;
-        try{   
-            stmt = conn.prepareStatement(sqlUpdate);
-            Date date = new Date();  
-            stmt.setDouble(1, student.getFinal_grade_double());
-            stmt.setInt(2, student.getMiss());
-            stmt.setString(3, student.getCurrentDateString());
-            stmt.setString(4, student.getCurrentTimeString());
-            stmt.setInt(5, student.getId());
-            stmt.executeUpdate();
-        }
-        catch(SQLException e)
-        {   try
-            {   conn.rollback();
-            }
-            catch(SQLException ex)
-            {   System.out.println("Erro ao alterar os dados" + ex.toString());
-            }
-        }
-        finally
-        {   
-            ConnectorFactory.closeConn(conn, stmt);
-        }  
-        return 1;
-    }
-
 }

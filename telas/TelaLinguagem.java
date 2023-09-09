@@ -22,7 +22,7 @@ public class TelaLinguagem extends JFrame{
         // Seleciona a linguagem
         switch(op){
             case 1:
-                bn = ResourceBundle.getBundle("linguagem.template", new Locale("pt", "BR"));
+                bn = ResourceBundle.getBundle("linguagem.template");
                 break;
             case 2:
                 bn = ResourceBundle.getBundle("linguagem.template", Locale.US);
