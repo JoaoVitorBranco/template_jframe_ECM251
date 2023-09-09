@@ -4,6 +4,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ResourceBundle;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,11 +27,16 @@ public class TelaLogin extends JFrame implements ActionListener{
     private JButton button_login;
     private JButton button_exit;
 
+    private ResourceBundle bn;
+
     // construtor
-    public TelaLogin(){
+    public TelaLogin(ResourceBundle bn){
         // Método "super"
-        super("Login - Notas e Faltas - Aula 14");
-        
+        super("Template");
+    
+        // Atribuição do ResourceBundle
+        this.bn = bn;
+
         // Criação do GUI inteiro
         /*
          * 3 layouts:
@@ -66,6 +72,10 @@ public class TelaLogin extends JFrame implements ActionListener{
          * 5. Centralizar valores de textos
          * 6. Formatação de datas
          * 7. Formatação de horários
+         * 8. JOptionPane
+         * 9. JComboBox
+         * 10. JPasswordField
+         * 11. JTable
          * 
          * 
          * 1. Setando fonte dos widgets
@@ -106,23 +116,73 @@ public class TelaLogin extends JFrame implements ActionListener{
          * 6.1. Data → str
          * private SimpleDateFormat date_formatter = new SimpleDateFormat("dd-MM-yyyy");
          * date_formatter.format(Data data)
+         * 6.2. str → Data
+         * private SimpleDateFormat date_formatter = new SimpleDateFormat("dd-MM-yyyy");
+         * date_formatter.parse(String data)
          * 
          * 7. Horários
          * 7.1. Time → str
          * private SimpleDateFormat date_formatter = new SimpleDateFormat("dd-MM-yyyy");
          * time_formatter.format(Time time)
+         * 7.2. str → Time
+         * private SimpleDateFormat date_formatter = new SimpleDateFormat("dd-MM-yyyy");
+         * time_formatter.parse(String time)
+         * 
+         * 8. JOptionPane
+         * 8.1. JOptionPane.showInputDialog
+         * String nome = JOptionPane.showInputDialog(null, "Digite o nome do aluno: ");
+         * 8.2. JOptionPane.showMessageDialog
+         * JOptionPane.showMessageDialog(null, "Aluno não encontrado!");
+         * 
+         * 9. JComboBox
+         * String names[] = {"name1", "name2", "name3"}
+         * JComboBox cb = new JComboBox();
+         * cb.setMaximumRowCount(3); // delimita o número que aparecerá por vez para o user; se quiser ver mais terá que scrollar
+         * cb.addItemListener(
+         *      new ItemListener(){
+         *          public void itemStateChanged(ItemEvent event){
+         *              if(event.getStateChange() == ItemEvent.SELECTED){
+         *                  System.out.println("Item "+ cb.getSelectedIndex() + "foi selecionado");
+         *              }
+         *          }
+         *      }
+         * )
+         * // adicionar o JComboBox no GUI
+         * 
+         * 10. JPasswordField
+         * JPasswordField password = new JPasswordField(20);
+         * 
+         * 11. JTable
+         * 11.1. Com uma matriz de objetos
+         * String[] titles = {"Nome", "Nota Final", "Quantidade de Faltas"};
+         * Object[][] data = {
+         *      {"name1", "nota1", "falta1"},
+         *      {"name2", "nota2", "falta2"},
+         *      {"name3", "nota3", "falta3"},
+         * };
+         * JTable table = new JTable(data, titles);
+         * JScrollPane scrollPane = new JScrollPane(table);
+         * 11.2. Com um DefaultTableModel
+         * String[] titles = {"Nome", "Nota Final", "Quantidade de Faltas"};
+         * DefaultTableModel model = new DefaultTableModel(titles, 0);
+         * model.addRow(new Object[]{"name1", "nota1", "falta1"});
+         * model.addRow(new Object[]{"name2", "nota2", "falta2"});
+         * model.addRow(new Object[]{"name3", "nota3", "falta3"});
+         * JTable table = new JTable(model);
+         * JScrollPane scrollPane = new JScrollPane(table);
+         * // adicionar o scrollPane no GUI
          * 
          * 
          * 
          */
-        label_username = new JLabel("Username: ");
+        label_username = new JLabel(this.bn.getString("tela_login.nome"));
         text_username = new JTextField(20);
         
-        label_password = new JLabel("Password: ");
+        label_password = new JLabel(this.bn.getString("tela_login.senha"));
         text_password = new JPasswordField(20);
 
-        button_login = new JButton("Login");
-        button_exit = new JButton("Exit");
+        button_login = new JButton(this.bn.getString("tela_login.entrar"));
+        button_exit = new JButton(this.bn.getString("tela_login.sair"));
 
         // Fazendo a adição dos widgets nas separações feitas
         /*
@@ -179,16 +239,15 @@ public class TelaLogin extends JFrame implements ActionListener{
         // Habilitando a visualização da janela
         setVisible(true);
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == button_login){
             String password = Crud.get_password(text_username.getText());
             if(!text_password.getText().equals(password)){
-                JOptionPane.showMessageDialog(null, "Usuário ou senha incorreto!");
+                JOptionPane.showMessageDialog(null, this.bn.getString("tela_login.cadastro.incorreto"));
             }
             else{
-                JOptionPane.showMessageDialog(null, "Login efetuado com sucesso!");
+                JOptionPane.showMessageDialog(null, this.bn.getString("tela_login.cadastro.correto"));
                 TelaDados tela_dados = new TelaDados(text_username.getText());
                 this.dispose();
             }
